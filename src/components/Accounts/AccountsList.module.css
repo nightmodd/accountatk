@@ -86,10 +86,15 @@
     display: flex;
     flex-direction: column;
     padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
   }
   .users li .account_data {
     margin-top: 1.5rem;
     font: 16px "Roboto", sans-serif;
     font-weight: 400;
+    text-align: center;
   }
 }
