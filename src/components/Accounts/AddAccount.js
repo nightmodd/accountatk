@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Card from "../UI/Card";
 import styles from "./AddAccount.module.css";
 import Button from "../UI/Button";
-import ErrorModal from "../UI/ErrorModal";
+import AlertModal from "../UI/AlertModal";
 
 const AddAccount = (props) => {
   const [editMode, setEditMode] = useState(false);
@@ -22,6 +22,7 @@ const AddAccount = (props) => {
 
     const userData = {
       platform: data.get("platform"),
+      link: data.get("link"),
       username: data.get("username"),
       password: data.get("password"),
       id: `A${Date.now()}`,
@@ -43,14 +44,20 @@ const AddAccount = (props) => {
     props.addUser(userData);
     form.reset();
   };
-  
+
   const errorHandler = () => {
     setError(null);
-  }
+  };
 
   return (
     <>
-      {error && <ErrorModal title={error.title} message={error.message} onConfirm={errorHandler} />}
+      {error && (
+        <AlertModal
+          title={error.title}
+          message={error.message}
+          onConfirm={errorHandler}
+        />
+      )}
       <Card className={styles.input}>
         {!editMode && (
           <Button type="button" onClick={onEditHandler}>
@@ -61,6 +68,8 @@ const AddAccount = (props) => {
           <form onSubmit={onSubmitHandler}>
             <label htmlFor="platform">PlatForm</label>
             <input id="platform" type="text" name="platform" />
+            <label htmlFor="link">PlatForm Link</label>
+            <input id="link" type="text" name="link" />
             <label htmlFor="username">Username/Email</label>
             <input id="username" type="text" name="username" />
             <label htmlFor="password">Password</label>
