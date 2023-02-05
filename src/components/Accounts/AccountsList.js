@@ -45,7 +45,7 @@ const AccountsList = (props) => {
           {props.usersData.map((user) => (
             <Card className={styles.list} key={user.id}>
               <div className={styles.list__delete}>
-                <button onClick={deleteHandler}>
+                <button onClick={deleteHandler} title="delete">
                   <img src={close} alt="close icon" />
                 </button>
               </div>
@@ -57,12 +57,14 @@ const AccountsList = (props) => {
                   <button
                     className={styles.account_data__button}
                     onClick={copyText}
+                    title="copy username"
                   >
                     <p>{user.username}</p>
                   </button>
                   <button
                     className={styles.account_data__button}
                     onClick={copyText}
+                    title="copy password"
                   >
                     <p>{user.password}</p>
                   </button>
