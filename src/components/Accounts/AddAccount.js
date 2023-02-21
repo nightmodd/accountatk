@@ -1,19 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useImperativeHandle } from "react";
 import Card from "../UI/Card";
-import styles from "./AddAccount.module.css";
 import Button from "../UI/Button";
 import AlertModal from "../UI/AlertModal";
 
-const AddAccount = (props) => {
+import styles from "./AddAccount.module.css";
+
+const AddAccount = React.forwardRef((props, ref) => {
+
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState();
+  const platformLabelRef = useRef();
+  const platformRef = useRef();
+  const linkRef = useRef();
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+
+  const activate = () => {
+    platformRef.current.focus();
+  };
+
+  const fillForm = (data) => {
+    platformRef.current.value = data.platform;
+    linkRef.current.value = data.link;
+    usernameRef.current.value = data.username;
+    passwordRef.current.value = data.password;
+  };
+
+  const scrollY = () => {
+    platformLabelRef.current.scrollIntoView({ behavior: "smooth" ,top: 50});
+  };
+
+  useImperativeHandle(ref, () => {
+    return {
+      edit: onEditHandler,
+      editMode: editMode,
+      activate: activate,
+      fillForm: fillForm,
+      scrollY: scrollY,
+    };
+  });
 
   const onEditHandler = () => {
     setEditMode(true);
   };
+
   const onCancelHandler = () => {
     setEditMode(false);
   };
+
   const onSubmitHandler = (ev) => {
     ev.preventDefault();
     const form = ev.currentTarget;
@@ -39,10 +73,9 @@ const AddAccount = (props) => {
       });
       return;
     }
-
-    console.log(userData);
     props.addUser(userData);
     form.reset();
+    setEditMode(false);
   };
 
   const errorHandler = () => {
@@ -66,14 +99,31 @@ const AddAccount = (props) => {
         )}
         {editMode && (
           <form onSubmit={onSubmitHandler}>
-            <label htmlFor="platform">PlatForm</label>
-            <input id="platform" type="text" name="platform" />
+            <label htmlFor="platform" ref={platformLabelRef}>
+              PlatForm
+            </label>
+            <input
+              id="platform"
+              type="text"
+              name="platform"
+              ref={platformRef}
+            />
             <label htmlFor="link">PlatForm Link</label>
-            <input id="link" type="text" name="link" />
+            <input id="link" type="text" name="link" ref={linkRef} />
             <label htmlFor="username">Username/Email</label>
-            <input id="username" type="text" name="username" />
+            <input
+              id="username"
+              type="text"
+              name="username"
+              ref={usernameRef}
+            />
             <label htmlFor="password">Password</label>
-            <input id="password" type="password" name="password" />
+            <input
+              id="password"
+              type="password"
+              name="password"
+              ref={passwordRef}
+            />
             <div className={styles.buttons}>
               <Button type="submit">Add Account</Button>
               <Button type="button" onClick={onCancelHandler}>
@@ -85,6 +135,6 @@ const AddAccount = (props) => {
       </Card>
     </>
   );
-};
+});
 
 export default AddAccount;
