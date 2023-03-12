@@ -71,7 +71,9 @@ const AccountsList = (props) => {
               </div>
               <li data-id={user.id}>
                 <Card className={`${styles.platform} ${styles.class_center}`}>
-                  <a href={user.link}>{user.platform}</a>
+                  <a href={user.link} target="_blank" rel="noReferrer">
+                    {user.platform}{" "}
+                  </a>
                 </Card>
                 <div className={`${styles.account_data} `}>
                   <button
